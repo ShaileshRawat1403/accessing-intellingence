@@ -2,29 +2,33 @@
 
 A lightweight, LLM-powered agent that recommends songs based on your favorite artists using LangChain Runnables and Groq/OpenAI models. Tracks all executions via AgentOps for observability and debugging.
 
+> Built to demonstrate how **modern LLM chains**, observability, and lightweight agents can plug into real-world tasks. This repo is not just code — it's a **teachable, extensible blueprint**.
+
 ---
 
 ## 🚀 Project Overview
 
-This project uses a modern **Runnable-based LLM chain** architecture with:
+This project showcases a modern **Runnable-based LLM chain** architecture with:
 
-- 🔗 **LangChain** for building the agent
-- 💬 **Groq** (LLaMA3) or **OpenAI GPT-3.5** as the LLM backend
-- 🧠 **AgentOps** for session tracing and observability
-- ✅ Clean `.env` based configuration
+- 🔗 **LangChain** for building the agent and toolchain
+- 💬 **Groq (LLaMA3)** or **OpenAI GPT-3.5** as the LLM backend
+- 🧠 **AgentOps** for session tracing, observability, and replays
+- ✅ Clean, `.env`-driven configuration
+- 🧰 Ready for plug-and-play use or expansion into a full-stack app
 
 ---
 
 ## 🧠 Use Case
 
-> Input: `"I like the following artists: Drake, Future. Can I get 5 song recommendations?"`  
-> Output: A curated list of 5 similar tracks based on style, genre, and artist vibe.
+> **Prompt**: `"I like the following artists: Drake, Future. Can I get 5 song recommendations?"`  
+> **Response**: A curated list of similar tracks based on genre, energy, and artist vibe.
 
-This agent is perfect for:
+This agent is ideal for:
+
 - Music discovery apps
-- LLM-powered content experiences
-- API chaining and enrichment pipelines
-- Learning LangChain Runnable architecture
+- LLM-powered recommendation engines
+- Prompt chaining and enrichment pipelines
+- Hands-on learning with LangChain Runnables + API integration
 
 ---
 
@@ -33,11 +37,11 @@ This agent is perfect for:
 ```
 
 spotify-agent/
-├── .env
-├── main.py                  # Entry point script
-├── agent\_config.py          # LLM chain setup (Runnable)
-├── tools.py                 # Custom logic (future tools)
-└── README.md                # You're here
+├── .env                    # Environment keys (excluded from version control)
+├── main.py                # Entry point script
+├── agent\_config.py        # LLM agent + Runnable chain setup
+├── tools.py               # Placeholder for extending functionality
+└── README.md              # You're here
 
 ````
 
@@ -58,13 +62,13 @@ cd spotify-agent
 pip install -r requirements.txt
 ```
 
-<sub>If `requirements.txt` is missing, install manually:</sub>
+<sub>or install manually if `requirements.txt` is missing:</sub>
 
 ```bash
 pip install langchain langchain-openai langchain-groq python-dotenv agentops
 ```
 
-### 3. Configure `.env`
+### 3. Configure Environment Keys
 
 Create a `.env` file in the root directory:
 
@@ -74,75 +78,101 @@ GROQ_API_KEY=your-groq-key-here
 AGENT_OPS_KEY=your-agentops-key-here
 ```
 
-> ✅ Only one of `OPENAI_API_KEY` or `GROQ_API_KEY` will be used based on how `agent_config.py` is written.
+> ✅ Only one LLM key is required — the agent will prioritize Groq by default if present.
 
 ---
 
 ## ▶️ Running the Agent
 
+Run the agent with:
+
 ```bash
 python main.py
 ```
 
-This will:
+Expected flow:
 
-* Start an AgentOps trace session
-* Run the prompt chain
-* Return 5 song recommendations based on your input
-* End the trace session (correctly, without crashes)
+* Loads the environment keys
+* Initializes the agent with tools and tracing
+* Prompts user input for favorite artists
+* Returns 5 song recommendations
+* Prints AgentOps session replay link for debugging
 
 ---
 
-## 🧪 Example Output
+## 🧪 Sample Output
 
 ```
 🎵 Final Song Recommendations:
 
-1. Travis Scott - Antidote
-2. Young Thug - Pick Up the Phone
-3. The Weeknd - The Hills
-4. Migos - Bad and Boujee
-5. Gunna - Sold Out Dates
+1. Travis Scott - "Sicko Mode"
+2. Young Thug - "Pick Up the Phone"
+3. The Weeknd - "The Hills"
+4. Gunna - "Sold Out Dates"
+5. Nav - "Wanted You"
 ```
+
+> Traces are logged to AgentOps with replayable session links for every execution.
 
 ---
 
-## 📊 AgentOps Integration
+## 📊 AgentOps Observability
 
-* ✅ Full traceability
-* ✅ Session replay links printed in terminal
-* ✅ Crash visibility + metrics
-* Future add-ons: custom tags, metrics logging
+This project is instrumented with [AgentOps](https://www.agentops.ai/) to provide:
+
+| Capability           | Status |
+| -------------------- | ------ |
+| Session Replay       | ✅      |
+| Crash Tracing        | ✅      |
+| Metrics + Logs       | ✅      |
+| Future Custom Events | 🔜     |
+
+> AgentOps helps you debug agents **as they behave**, not just at crash time.
 
 ---
 
 ## 📌 Key Features
 
-| Feature                  | Supported |
-| ------------------------ | --------- |
-| LangChain Runnable       | ✅         |
-| LLM Choice (OpenAI/Groq) | ✅         |
-| AgentOps tracing         | ✅         |
-| Clean prompt chaining    | ✅         |
-| Tool extension support   | 🔜        |
-| Spotify API connection   | 🔜        |
-| Web UI / Streamlit       | 🔜        |
+| Feature                     | Status |
+| --------------------------- | ------ |
+| LangChain Runnable support  | ✅      |
+| LLM switch (Groq/OpenAI)    | ✅      |
+| AgentOps instrumentation    | ✅      |
+| Clean prompt chaining       | ✅      |
+| `.env`-based setup          | ✅      |
+| Spotify Web API integration | 🔜     |
+| Tool Extension Architecture | 🔜     |
+| Frontend / UI (Streamlit)   | 🔜     |
 
 ---
 
-## 📦 To Do Next
+## 📦 What's Next
 
-* [ ] Add Spotify Web API for track preview links
-* [ ] Build a minimal Streamlit or Gradio frontend
-* [ ] Add genre, mood, and decade filters
-* [ ] Dockerize for deployment
-* [ ] Unit tests with `pytest`
+* [ ] Integrate Spotify Web API for real-time track links
+* [ ] Add genre/mood/decade filters
+* [ ] Streamlit frontend for live demos
+* [ ] Dockerize the setup for deployment
+* [ ] Add logging & error handling hooks
+* [ ] Unit test coverage with `pytest`
+
+---
+
+## 🎯 How This Helps You Learn
+
+This repo is designed to help you:
+
+* Understand how LangChain Runnables work (vs older Agents)
+* Observe and debug LLMs via AgentOps
+* Prototype LLM-powered use cases without bloated setups
+* Expand into real-world integrations using Spotify, Groq, OpenAI, or your own tools
+
+If you're new to agent-based systems or LLM chains, this project gives you **just enough to learn and launch**.
 
 ---
 
 ## 🤝 Contributing
 
-Pull requests are welcome. For major changes, open an issue first to discuss.
+Pull requests are welcome. Please open an issue for discussion before large changes.
 
 ---
 
@@ -150,15 +180,6 @@ Pull requests are welcome. For major changes, open an issue first to discuss.
 
 MIT © 2025 Shailesh Rawat
 
-```
-
 ---
 
-Let me know if you want to:
-
-- Push this to GitHub via terminal
-- Generate `requirements.txt`
-- Add badges (Python version, LangChain, Groq, etc.)
-
-Shall I also scaffold a `docs/` folder or auto-create the Git commit and push steps?
 
