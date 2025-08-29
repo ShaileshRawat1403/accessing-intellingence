@@ -100,28 +100,30 @@ MD
 ## 🤖 Step 5 – Write Minimal Agent Code
 
 ```python
-from crewai import Agent, Task, Crew, Process
-from langchain_ollama import ChatOllama
+# agent.py (or agent_poc.py)
+
+from crewai import Agent, Task, Crew, Process, LLM
 from crewai_tools import FileReadTool
 
-# Local LLM via Ollama
-llm = ChatOllama(model="mistral", temperature=0.2)
+# 1) Tell CrewAI to use Ollama via LiteLLM
+llm = LLM(
+    model="ollama/mistral",                  # <-- provider/model
+    base_url="http://localhost:11434",       # <-- Ollama default
+    temperature=0.2,
+)
 
-# Tool to read a file
 file_tool = FileReadTool()
 
-# Agent definition
 summarizer = Agent(
     role="Documentation Summarizer",
     goal="Summarize a local Markdown file in clear bullets.",
     backstory="You are a concise DevOps-friendly technical writer.",
     tools=[file_tool],
-    llm=llm,
+    llm=llm,                                  # <-- use CrewAI LLM here
     verbose=True,
     allow_delegation=False,
 )
 
-# Task for the agent
 task = Task(
     description=(
         "Read the file at {file_path} and produce:\n"
@@ -134,7 +136,6 @@ task = Task(
     agent=summarizer,
 )
 
-# Crew to run everything
 crew = Crew(
     agents=[summarizer],
     tasks=[task],
